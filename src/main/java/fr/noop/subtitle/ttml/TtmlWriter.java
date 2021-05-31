@@ -65,6 +65,13 @@ public class TtmlWriter implements SubtitleWriter {
                         String.valueOf(ttmlObject.getProperty(SubtitleObject.Property.FRAME_RATE)));
             }
 
+            if (ttmlObject.hasProperty(SubtitleObject.Property.LANGUAGE)) {
+                xsw.writeAttribute(
+                    NS_XML,
+                    "lang",
+                    String.valueOf(ttmlObject.getProperty(SubtitleObject.Property.LANGUAGE)));
+            }
+
             // Write header
             xsw.writeStartElement("head");
 

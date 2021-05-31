@@ -22,7 +22,8 @@ public interface SubtitleObject {
         TITLE,
         DESCRIPTION,
         COPYRIGHT,
-        FRAME_RATE;
+        FRAME_RATE,
+        LANGUAGE
     }
 
     public boolean hasProperty(Property property);
