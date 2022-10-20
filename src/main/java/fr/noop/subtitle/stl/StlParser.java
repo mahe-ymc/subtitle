@@ -19,6 +19,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Optional;
+import java.util.Arrays;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -32,7 +34,7 @@ import fr.noop.subtitle.util.SubtitleTimeCode;
 public class StlParser implements SubtitleParser {
     public StlParser() {
     }
-    
+
     public StlObject parse(InputStream is) throws SubtitleParsingException {
     	return parse(is, true, false, false);
     }
@@ -57,7 +59,8 @@ public class StlParser implements SubtitleParser {
             StlGsi gsi = this.readGsi(dis);
             stl = new StlObject(gsi);
         } catch (IOException e) {
-            throw new SubtitleParsingException("Unable to parse Gsi block");
+            e.printStackTrace();
+            throw new SubtitleParsingException("Unable to parse Gsi block", e);
         }
 
         // Iterate over all TTI blocks and parse them
@@ -127,6 +130,7 @@ public class StlParser implements SubtitleParser {
     private String readString(DataInputStream dis, int length) throws IOException {
         byte [] bytes = new byte[length];
         dis.readFully(bytes, 0, length);
+        //System.out.println("bytes = " + Arrays.toString(bytes));
 
         // Remove spaces at start and end of the string
         return StringUtils.strip(new String(bytes));
@@ -174,10 +178,15 @@ public class StlParser implements SubtitleParser {
         gsi.setTcd(this.readString(dis, 32));
 
         // Read Subtitle List Reference Code (SLR)
-        gsi.setSlr(this.readString(dis, 16));
+        final String listReferenceCode = this.readString(dis, 16);
+        gsi.setSlr(listReferenceCode);
 
         // Read Creation Date (CD)
-        gsi.setCd(this.readDate(this.readString(dis, 6)));
+        final String creationDateString = this.readString(dis, 6);
+        if(creationDateString.trim().isBlank())
+            gsi.setCd(Optional.<Date>empty());
+        else
+            gsi.setCd(Optional.ofNullable(this.readDate(creationDateString)));
 
         // Read Revision Date (RD)
         gsi.setRd(this.readDate(this.readString(dis, 6)));

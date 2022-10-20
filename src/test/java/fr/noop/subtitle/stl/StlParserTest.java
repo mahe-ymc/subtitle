@@ -21,6 +21,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Optional;
 
 /**
  * Created by clebeaupin on 24/11/15.
@@ -45,7 +46,7 @@ public class StlParserTest {
 
     @Test
     public void testGsiCpn() throws Exception {
-        assertEquals(StlGsi.Cpn.MULTILINGUAL, testedGsi.getCpn());
+        assertEquals(Optional.of(StlGsi.Cpn.MULTILINGUAL), testedGsi.getCpn());
     }
 
     @Test
@@ -94,7 +95,7 @@ public class StlParserTest {
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(0);
         cal.set(2013, Calendar.OCTOBER, 10, 0, 0, 0);
-        assertEquals(cal.getTime(), testedGsi.getCd());
+        assertEquals(Optional.ofNullable(cal.getTime()), testedGsi.getCd());
     }
 
     @Test

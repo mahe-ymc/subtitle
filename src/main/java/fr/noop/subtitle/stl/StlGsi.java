@@ -13,12 +13,13 @@ package fr.noop.subtitle.stl;
 import fr.noop.subtitle.util.SubtitleTimeCode;
 
 import java.util.Date;
+import java.util.Optional;
 
 /**
  * Created by clebeaupin on 21/09/15.
  */
 public class StlGsi {
-    private Cpn cpn; // Code Page Number
+    private Optional<Cpn> cpn; // Code Page Number
     private Dfc dfc; // Disk Format Code
     private Dsc dsc; // Display Standard Code
     private Cct cct; // Character Code Table number
@@ -30,7 +31,7 @@ public class StlGsi {
     private String tn; // Translator's Name
     private String tcd; // Translator's Contact Details
     private String slr; // Subtitle List Reference Code
-    private Date cd; // Creation date (YYMMDD) (ISO 8601)
+    private Optional<Date> cd; // Creation date (YYMMDD) (ISO 8601)
     private Date rd; // Revision Date (YYMMDD) (ISO 8601)
     private int rn; // Revision number
     private int tnb; // Total Number of Text and Timing Information (TTI) blocks
@@ -67,10 +68,10 @@ public class StlGsi {
             return this.value;
         }
 
-        public static Cpn getEnum(int value) {
+        public static Optional<Cpn> getEnum(int value) {
             for(Cpn v : values())
-                if(v.getValue() == value) return v;
-            throw new IllegalArgumentException();
+                if(v.getValue() == value) return Optional.of(v);
+            return Optional.empty();
         }
     }
 
@@ -159,11 +160,11 @@ public class StlGsi {
 
 
 
-    public Cpn getCpn() {
+    public Optional<Cpn> getCpn() {
         return this.cpn;
     }
 
-    public void setCpn(Cpn cpn) {
+    public void setCpn(Optional<Cpn> cpn) {
         this.cpn = cpn;
     }
 
@@ -255,11 +256,11 @@ public class StlGsi {
         this.slr = slr;
     }
 
-    public Date getCd() {
+    public Optional<Date> getCd() {
         return this.cd;
     }
 
-    public void setCd(Date cd) {
+    public void setCd(Optional<Date> cd) {
         this.cd = cd;
     }
 
